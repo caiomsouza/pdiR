@@ -1,4 +1,7 @@
-FROM wmarinho/ubuntu:oracle-jdk-7
+# FROM wmarinho/ubuntu:oracle-jdk-7
+
+# Docker Library 
+FROM java:7
 
 MAINTAINER Caio Moreno de Souza caiomsouza@gmail.com
 
