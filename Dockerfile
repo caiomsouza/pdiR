@@ -30,5 +30,5 @@ WORKDIR /opt/pentaho/data-integration
 
 # EXPOSE 8181
 
-CMD ["./run.sh"]
+#CMD ["./run.sh"]
 
