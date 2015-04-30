@@ -23,7 +23,7 @@ RUN /usr/bin/wget -nv http://downloads.sourceforge.net/project/pentaho/Data%20In
 RUN  /usr/bin/unzip -q /tmp/pdi-ce-${PDI_TAG}.zip -d  $PENTAHO_HOME &&\
      rm /tmp/pdi-ce-${PDI_TAG}.zip
 
-COPY run.sh /opt/pentaho/data-integration/
+# COPY run.sh /opt/pentaho/data-integration/
 # COPY slave_dyn.xml /opt/pentaho/data-integration/
 
 WORKDIR /opt/pentaho/data-integration
