@@ -71,7 +71,8 @@ RUN sed -i 's/\.\.\/libswt/libswt/g' ${PENTAHO_HOME}/data-integration/spoon.sh
 # Testing PDI with R step
 # docker build -t pentaho/pdir .
 # docker run --rm -it pentaho/pdir /opt/pentaho/test/test.sh
-# COPY test /opt/pentaho/test
+
+COPY test /opt/pentaho/test
 
 # EXPOSE 8181
 
