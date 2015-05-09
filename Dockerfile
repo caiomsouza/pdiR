@@ -7,6 +7,7 @@ MAINTAINER Caio Moreno de Souza caiomsouza@gmail.com
 
 # Init ENV
 ENV PDI_TAG 5.3.0.0-213
+ENV R_VERSION 0.0.4
 
 ENV PENTAHO_HOME /opt/pentaho
 
@@ -31,7 +32,35 @@ RUN  /usr/bin/unzip -q /tmp/pdi-ce-${PDI_TAG}.zip -d  $PENTAHO_HOME &&\
 
 WORKDIR /opt/pentaho/data-integration
 
+RUN apt-get update -y
+
+RUN apt-get install r-base -y
+
+# RUN apt-get install unzip
+
+RUN wget -nv http://dekarlab.de/download/RScriptPlugin-${R_VERSION}.zip -O /tmp/RScriptPlugin-${R_VERSION}.zip
+ 
+RUN unzip -q /tmp/RScriptPlugin-${R_VERSION}.zip -d /opt/ &&\
+    mv /opt/RScript* ${PENTAHO_HOME}/data-integration/plugins/steps/
+
+ENV PENTAHO_JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk-amd64
+RUN wget -nv http://cran.r-project.org/src/contrib/rJava_0.9-6.tar.gz -O /tmp/rJava_0.9-6.tar.gz &&\
+    R CMD javareconf JAVA_HOME=${PENTAHO_JAVA_HOME} &&\
+    R CMD INSTALL -l /usr/lib/R/library /tmp/rJava_0.9-6.tar.gz 
+
+RUN cp /usr/lib/R/library/rJava/jri/libjri.so   ${PENTAHO_HOME}/data-integration/libswt/linux/x86_64/libjri.so
+
+ENV R_HOME=/usr/lib/R
+ENV R_LIBS_USER=/usr/lib/R/library
+ENV PATH=.:$PATH:$R_HOME/bin
+
+RUN sed -i 's/\.\.\/libswt/libswt/g' ${PENTAHO_HOME}/data-integration/spoon.sh
+
+# Testing PDI with R step
+# docker build -t pentaho/pdir .
+# docker run --rm -it pentaho/pdir /opt/pentaho/test/test.sh
+# COPY test /opt/pentaho/test
+
 # EXPOSE 8181
 
 #CMD ["./run.sh"]
-
